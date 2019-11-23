@@ -5,3 +5,6 @@
 /TurtleChallenge/.vs/TurtleChallenge/v15
 /TurtleChallenge/obj/Debug
 /TurtleChallenge.Console/obj/Debug
+/TurtleChallenge/TurtleChallenge.CrossCutting/obj/Debug
+/TurtleChallenge/TurtleChallenge.Data/obj/Debug
+/TurtleChallenge/TurtleChallenge.Domain/obj/Debug
