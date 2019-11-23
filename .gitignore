@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/TurtleChallenge/.vs/TurtleChallenge/v15
+/TurtleChallenge/obj/Debug
+/TurtleChallenge.Console/obj/Debug
