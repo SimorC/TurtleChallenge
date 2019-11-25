@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TurtleChallenge.CrossCutting.Exception
+namespace TurtleChallenge.Domain.Exception
 {
     public class GameLoadException : System.Exception
     {

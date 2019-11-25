@@ -29,7 +29,7 @@ namespace TurtleChallenge.Data.Data
         {
             Turtle turtle = new Turtle((Direction)json.TurtleDirection);
             Exit exit = new Exit();
-            Game.GameBoard = new Board((int)json.BoardSizeX, (int)json.BoardSizeY);
+            Game.GameBoard = new Board((int)json.BoardSizeX, (int)json.BoardSizeY, this);
 
             // Add Turtle
             Game.GameBoard.AddGameObject((int)json.TurtlePosX, (int)json.TurtlePosY, turtle);

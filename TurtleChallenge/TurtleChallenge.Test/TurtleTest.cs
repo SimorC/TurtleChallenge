@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TurtleChallenge.CrossCutting.Exception;
+using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 using TurtleChallenge.Test.Helper;

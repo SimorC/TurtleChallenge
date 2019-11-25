@@ -2,6 +2,8 @@
 using System.Linq;
 using System;
 using TurtleChallenge.Domain.Model.Extension;
+using TurtleChallenge.Domain.Interfaces;
+using TurtleChallenge.Domain.Validation;
 
 namespace TurtleChallenge.Domain.Model
 {
@@ -12,21 +14,35 @@ namespace TurtleChallenge.Domain.Model
 
         public List<Tile> Tiles { get; set; }
 
-        public Board(string configPath)
+        private readonly IFileData _fileData;
+
+        public Board(string configPath, IFileData fileData)
         {
-            throw new NotImplementedException();
+            this._fileData = fileData;
+            
+            try
+            {
+                this._fileData.LoadConfigurationFile(configPath).Wait();
+            }
+            catch (System.Exception ex)
+            {
+                throw ex.InnerException;
+            }
         }
 
-        public Board(int sizeX, int sizeY)
+        public Board(int sizeX, int sizeY, IFileData fileData)
         {
+            this._fileData = fileData;
+
             this.SizeX = sizeX;
             this.SizeY = sizeY;
 
             this.Tiles = GetEmptyTiles(sizeX, sizeY).ToList();
         }
 
-        public Board(int sizeX, int sizeY, IEnumerable<Tile> tiles)
+        public Board(int sizeX, int sizeY, IEnumerable<Tile> tiles, IFileData fileData)
         {
+            this._fileData = fileData;
             throw new NotImplementedException();
         }
 
@@ -44,7 +60,9 @@ namespace TurtleChallenge.Domain.Model
 
         public void AddGameObject(Coordinate coordinate, GameObject objectTBA)
         {
-            var tileItem = this.Tiles.First(tile => tile.Coordinate.IsSame(coordinate));
+            var tileItem = this.Tiles.FirstOrDefault(tile => tile.Coordinate.IsSame(coordinate));
+            BoardValidation.ValidateTileObject(tileItem);
+            BoardValidation.ValidateConcurrentObject(tileItem);
             tileItem.CurrentObject = objectTBA;
         }
 

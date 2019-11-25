@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TurtleChallenge.CrossCutting;
+using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model;
 
 namespace TurtleChallenge.Test.Helper
 {
     internal class TestHelper
     {
+        private readonly IFileData _fileData;
+
         #region Config Files
         internal static string _correctConfigPath = "ConfigurationFiles/CorrectConfig.json";
         internal static string _nonWinnableConfigPath_1 = "ConfigurationFiles/NonWinnable_1.json";
@@ -38,9 +44,17 @@ namespace TurtleChallenge.Test.Helper
         {
             List<Tile> tiles = GetEmptyTiles(sizeX, sizeY).ToList();
 
-            Board ret = new Board(sizeX, sizeY, tiles);
+            Board ret = new Board(sizeX, sizeY, tiles, GetFileData());
 
             return ret;
+        }
+
+        internal static IFileData GetFileData()
+        {
+            var kernel = new StandardKernel();
+            new LoadInjectionModule(kernel).Load();
+            kernel.Load(Assembly.GetExecutingAssembly());
+            return kernel.Get<IFileData>();
         }
 
         private static IEnumerable<Tile> GetEmptyTiles(int sizeX, int sizeY)
