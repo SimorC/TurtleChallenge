@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TurtleChallenge.Domain.Model
+namespace TurtleChallenge.Domain.Model.Enum
 {
-    public class Exit : GameObject
+    public enum TurtleAction
     {
-        public Exit() : base()
-        {
-
-        }
+        Move,
+        Rotate
     }
 }

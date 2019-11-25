@@ -1,0 +1,19 @@
+{
+  "BoardSizeX": 5,
+  "BoardSizeY": 5,
+  "TurtlePosX": 0,
+  "TurtlePosY": 2,
+  "TurtleDirection": "N",
+  "ExitPosX": 6,
+  "ExitPosY": 2,
+  "Mines": [
+    {
+      "MinePosX": 3,
+      "MinePosY": 2
+    },
+    {
+      "MinePosX": 0,
+      "MinePosY": 0
+    }
+  ]
+}

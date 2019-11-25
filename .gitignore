@@ -8,3 +8,11 @@
 /TurtleChallenge/TurtleChallenge.CrossCutting/obj/Debug
 /TurtleChallenge/TurtleChallenge.Data/obj/Debug
 /TurtleChallenge/TurtleChallenge.Domain/obj/Debug
+/TurtleChallenge/.vs/config
+/TurtleChallenge/packages
+/TurtleChallenge/TurtleChallenge.CrossCutting/bin/Debug
+/TurtleChallenge/TurtleChallenge.Data/bin/Debug
+/TurtleChallenge/TurtleChallenge.Domain/bin/Debug
+/TurtleChallenge/TurtleChallenge.Test/bin/Debug
+/TurtleChallenge/TurtleChallenge.Test/obj/Debug
+/TurtleChallenge.Console/bin/Debug

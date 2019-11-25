@@ -8,14 +8,29 @@ namespace TurtleChallenge.Domain.Model
         public int SizeX { get; set; }
         public int SizeY { get; set; }
 
-        public IEnumerable<GameObject> Tiles { get; set; }
+        public IEnumerable<Tile> Tiles { get; set; }
 
-        public Board(int sizeX, int sizeY)
+        public Board(string configPath)
         {
             throw new NotImplementedException();
         }
 
-        public void BuildBoard()
+        public Board(int sizeX, int sizeY, IEnumerable<Tile> tiles)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsGameWinnable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddGameObject(int posX, int posY, GameObject objectTBA)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddGameObject(Coordinate coordinate, GameObject objectTBA)
         {
             throw new NotImplementedException();
         }

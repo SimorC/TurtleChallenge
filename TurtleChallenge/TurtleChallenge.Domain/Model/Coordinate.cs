@@ -10,5 +10,11 @@ namespace TurtleChallenge.Domain.Model
     {
         public int PosX { get; set; }
         public int PosY { get; set; }
+
+        public Coordinate(int posX, int posY)
+        {
+            this.PosX = posX;
+            this.PosY = posY;
+        }
     }
 }

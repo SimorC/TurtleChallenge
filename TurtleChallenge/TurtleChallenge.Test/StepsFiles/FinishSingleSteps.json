@@ -1,0 +1,16 @@
+{
+  "Sequences": [
+    {
+      "Steps": [
+        { "Action": "M" },
+        { "Action": "R" },
+        { "Action": "M" },
+        { "Action": "M" },
+        { "Action": "M" },
+        { "Action": "M" },
+        { "Action": "R" },
+        { "Action": "M" }
+      ]
+    }
+  ]
+}

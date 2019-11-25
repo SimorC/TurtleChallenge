@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1 - TurtleChallenge.Console
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2 - TurtleChallenge.Domain", "TurtleChallenge.Domain\2 - TurtleChallenge.Domain.csproj", "{AD288017-36AB-436B-989B-A2B01764637E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3 - TurtleChallenge.Data", "TurtleChallenge.Data\3 - TurtleChallenge.Data.csproj", "{ECC1CD98-8C5E-45A9-A075-7B9B9C99382D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3 - TurtleChallenge.Infra", "TurtleChallenge.Data\3 - TurtleChallenge.Infra.csproj", "{ECC1CD98-8C5E-45A9-A075-7B9B9C99382D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4 - TurtleChallenge.CrossCutting", "TurtleChallenge.CrossCutting\4 - TurtleChallenge.CrossCutting.csproj", "{3059AC8E-8698-43D9-8DF0-C6932100E07E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5 - TurtleChallenge.Test", "TurtleChallenge.Test\5 - TurtleChallenge.Test.csproj", "{7194A0E4-9CDB-490E-8A7F-388514F41BAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3059AC8E-8698-43D9-8DF0-C6932100E07E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3059AC8E-8698-43D9-8DF0-C6932100E07E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3059AC8E-8698-43D9-8DF0-C6932100E07E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7194A0E4-9CDB-490E-8A7F-388514F41BAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7194A0E4-9CDB-490E-8A7F-388514F41BAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7194A0E4-9CDB-490E-8A7F-388514F41BAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7194A0E4-9CDB-490E-8A7F-388514F41BAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

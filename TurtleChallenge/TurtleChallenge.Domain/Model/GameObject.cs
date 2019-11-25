@@ -8,15 +8,7 @@ namespace TurtleChallenge.Domain.Model
 {
     public abstract class GameObject
     {
-        public Coordinate Coordinate { get; set; }
-        public GameObject CurrentObject { get; set; }
-
-        public GameObject(int posX, int posY)
-        {
-            throw new NotImplementedException();
-        }
-
-        public GameObject(Coordinate pos)
+        public GameObject()
         {
             throw new NotImplementedException();
         }

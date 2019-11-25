@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7194A0E4-9CDB-490E-8A7F-388514F41BAA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TurtleChallenge.Test</RootNamespace>
+    <AssemblyName>TurtleChallenge.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActionsTest.cs" />
+    <Compile Include="BoardTest.cs" />
+    <Compile Include="DataTest.cs" />
+    <Compile Include="Helper\TestHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TurtleTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ConfigurationFiles\ConflictingMines.json" />
+    <None Include="ConfigurationFiles\CorrectConfig.json" />
+    <None Include="ConfigurationFiles\ExitOutOfBounds.json" />
+    <None Include="ConfigurationFiles\MinesOutOfBounds.json" />
+    <None Include="ConfigurationFiles\MissingBoard.json" />
+    <None Include="ConfigurationFiles\MissingExit.json" />
+    <None Include="ConfigurationFiles\MissingTurtleConfig.json" />
+    <None Include="ConfigurationFiles\MissingTurtleDirection.json" />
+    <None Include="ConfigurationFiles\NonWinnable_1.json" />
+    <None Include="ConfigurationFiles\NonWinnable_2.json" />
+    <None Include="ConfigurationFiles\TurtleOutOfBounds.json" />
+    <None Include="ConfigurationFiles\TurtleStartingOnExit.json" />
+    <None Include="ConfigurationFiles\TurtleStartingOnMine.json" />
+    <None Include="packages.config" />
+    <None Include="StepsFiles\FinishMultipleSequence.json" />
+    <None Include="StepsFiles\FinishSingleSteps.json" />
+    <None Include="StepsFiles\IncorrectMultipleSequences.json" />
+    <None Include="StepsFiles\IncorrectSequence.json" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TurtleChallenge.CrossCutting\4 - TurtleChallenge.CrossCutting.csproj">
+      <Project>{3059ac8e-8698-43d9-8df0-c6932100e07e}</Project>
+      <Name>4 - TurtleChallenge.CrossCutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TurtleChallenge.Data\3 - TurtleChallenge.Infra.csproj">
+      <Project>{ecc1cd98-8c5e-45a9-a075-7b9b9c99382d}</Project>
+      <Name>3 - TurtleChallenge.Infra</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TurtleChallenge.Domain\2 - TurtleChallenge.Domain.csproj">
+      <Project>{ad288017-36ab-436b-989b-a2b01764637e}</Project>
+      <Name>2 - TurtleChallenge.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.targets'))" />
+  </Target>
+  <Import Project="..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.2.0.0\build\net45\MSTest.TestAdapter.targets')" />
+</Project>

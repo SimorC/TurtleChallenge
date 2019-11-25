@@ -9,14 +9,9 @@ namespace TurtleChallenge.Domain.Model
 {
     public class Turtle : GameObject
     {
-        public Direction Direction { get; set; }
+        public Direction Direction { get; private set; }
 
-        public Turtle(int posX, int posY) : base(posX, posY)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Turtle(Coordinate coordinate) : base(coordinate)
+        public Turtle(Direction direction) : base()
         {
             throw new NotImplementedException();
         }
@@ -27,6 +22,11 @@ namespace TurtleChallenge.Domain.Model
         }
 
         public void Rotate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Coordinate GetCurrentCoordinate()
         {
             throw new NotImplementedException();
         }
