@@ -1,120 +1,116 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using TurtleChallenge.Data.Data;
 using TurtleChallenge.Domain.Model;
+using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Test.Helper;
+using Xunit;
 
 namespace TurtleChallenge.Test
 {
-    [TestClass]
     public class DataTest
     {
         #region Config
-        [TestMethod]
-        public void LoadConfigurationFile_CorrectConfigFile()
+        [Fact]
+        public async void LoadConfigurationFile_CorrectConfigFile()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
+            await fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
 
-            Assert.IsTrue(Game.GameBoard.SizeX > 0);
-            Assert.IsTrue(Game.GameBoard.SizeY > 0);
-            Assert.IsTrue(Game.GameBoard.Tiles.Count() > 0);
+            Assert.True(Game.GameBoard.SizeX > 0);
+            Assert.True(Game.GameBoard.SizeY > 0);
+            Assert.True(Game.GameBoard.Tiles.Count() > 0);
+            Assert.True(new Coordinate(0, 2).IsSame(Game.GameBoard.GetTurtleCoordinate()));
+            Assert.True(new Coordinate(4, 2).IsSame(Game.GameBoard.GetExitCoordinate()));
+            Assert.True(new Coordinate(0, 0).IsSame(Game.GameBoard.GetMinesCoordinates()[0]));
+            Assert.True(new Coordinate(3, 2).IsSame(Game.GameBoard.GetMinesCoordinates()[1]));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException), "Configuration file not found!")]
-        public void LoadConfigurationFile_MissingConfigFile_Throws()
+        [Fact]
+        public async void LoadConfigurationFile_MissingConfigFile_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._missingFile);
+            await Assert.ThrowsAsync<FileNotFoundException>(() => fileData.LoadConfigurationFile(TestHelper._missingFile));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Exit node is missing!")]
-        public void LoadConfigurationFile_MissingExit_Throws()
+        [Fact]
+        public async void LoadConfigurationFile_MissingExit_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._missingExit);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadConfigurationFile(TestHelper._missingExit));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Turtle position is missing!")]
-        public void LoadConfigurationFile_MissingTurtle_Throws()
+        [Fact]
+        public async void LoadConfigurationFile_MissingTurtle_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._missingTurtle);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadConfigurationFile(TestHelper._missingTurtle));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Board configuration is missing!")]
-        public void LoadConfigurationFile_MissingBoard_Throws()
+        [Fact]
+        public async void LoadConfigurationFile_MissingBoard_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._missingBoard);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadConfigurationFile(TestHelper._missingBoard));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Turtle direction is missing!")]
-        public void LoadConfigurationFile_MissingTurtleDirection_Throws()
+        [Fact]
+        public async void LoadConfigurationFile_MissingTurtleDirection_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadConfigurationFile(TestHelper._missingTurtleDirection);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadConfigurationFile(TestHelper._missingTurtleDirection));
         }
         #endregion
 
         #region Steps
-        [TestMethod]
-        public void LoadStepsFile_CorrectStepsFile()
+        [Fact]
+        public async void LoadStepsFile_CorrectStepsFile()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadStepsFile(TestHelper._finishSingleSteps);
+            await fileData.LoadStepsFile(TestHelper._finishSingleSteps);
 
-            Assert.IsTrue(Game.Sequences.Count == 1);
+            Assert.True(Game.Sequences.Count == 1);
         }
 
-        [TestMethod]
-        public void LoadStepsFile_CorrectMultipleStepsFile()
+        [Fact]
+        public async void LoadStepsFile_IncorrectStepsFile_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadStepsFile(TestHelper._finishMultipleSequence);
-
-            Assert.IsTrue(Game.Sequences.Count == 2);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadStepsFile(TestHelper._incorrectSequence));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Incorrect sequence file!")]
-        public void LoadStepsFile_IncorrectStepsFile_Throws()
+        [Fact]
+        public async void LoadStepsFile_IncorrectMultipleStepsFile_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadStepsFile(TestHelper._incorrectSequence);
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadStepsFile(TestHelper._incorrectMultipleSequences));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileLoadException), "Incorrect sequence file!")]
-        public void LoadStepsFile_IncorrectMultipleStepsFile_Throws()
+        [Fact]
+        public async void LoadStepsFile_MissingStepsFile_Throws()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadStepsFile(TestHelper._incorrectMultipleSequences);
+            await Assert.ThrowsAsync<FileNotFoundException>(() => fileData.LoadStepsFile(TestHelper._missingFile));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException), "Steps file not found!")]
-        public void LoadStepsFile_MissingStepsFile_Throws()
+        [Fact]
+        public async void LoadStepsFile_CorrectMultipleStepsFile()
         {
             FileData fileData = new FileData();
 
-            fileData.LoadStepsFile(TestHelper._missingFile);
+            await fileData.LoadStepsFile(TestHelper._finishMultipleSequence);
+
+            Assert.Equal(2, Game.Sequences.Count);
         }
         #endregion
     }

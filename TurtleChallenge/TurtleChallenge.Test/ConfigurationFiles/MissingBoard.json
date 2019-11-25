@@ -1,7 +1,7 @@
 {
   "TurtlePosX": 0,
   "TurtlePosY": 2,
-  "TurtleDirection": "N",
+  "TurtleDirection": 1,
   "ExitPosX": 4,
   "ExitPosY": 2,
   "Mines": [

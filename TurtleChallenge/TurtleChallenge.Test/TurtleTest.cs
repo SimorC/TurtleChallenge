@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +7,13 @@ using TurtleChallenge.CrossCutting.Exception;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 using TurtleChallenge.Test.Helper;
+using Xunit;
 
 namespace TurtleChallenge.Test
 {
-    [TestClass]
     public class TurtleTest
     {
-        [TestMethod]
+        [Fact]
         public void Rotate()
         {
             Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
@@ -23,23 +22,23 @@ namespace TurtleChallenge.Test
             Game.GameBoard.AddGameObject(0, 2, turtle);
 
             turtle.Rotate();
-            Assert.AreEqual(turtle.Direction, Direction.East);
+            Assert.Equal(Direction.East, turtle.Direction);
 
             turtle.Rotate();
-            Assert.AreEqual(turtle.Direction, Direction.South);
+            Assert.Equal(Direction.South, turtle.Direction);
 
             turtle.Rotate();
-            Assert.AreEqual(turtle.Direction, Direction.West);
+            Assert.Equal(Direction.West, turtle.Direction);
 
             turtle.Rotate();
-            Assert.AreEqual(turtle.Direction, Direction.North);
+            Assert.Equal(Direction.North, turtle.Direction);
 
             turtle.Rotate();
             turtle.Rotate();
-            Assert.AreEqual(turtle.Direction, Direction.South);
+            Assert.Equal(Direction.South, turtle.Direction);
         }
 
-        [TestMethod]
+        [Fact]
         public void Move()
         {
             Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
@@ -48,18 +47,17 @@ namespace TurtleChallenge.Test
             Game.GameBoard.AddGameObject(0, 2, turtle);
 
             turtle.Move();
-            Assert.AreEqual(turtle.GetCurrentCoordinate(), new Coordinate(0, 1));
+            Assert.Equal(new Coordinate(0, 1), turtle.GetCurrentCoordinate());
 
             turtle.Move();
-            Assert.AreEqual(turtle.GetCurrentCoordinate(), new Coordinate(0, 0));
+            Assert.Equal(new Coordinate(0, 0), turtle.GetCurrentCoordinate());
 
             // If standing in the border of the board (?), simply won't move
             turtle.Move();
-            Assert.AreEqual(turtle.GetCurrentCoordinate(), new Coordinate(0, 0));
+            Assert.Equal(new Coordinate(0, 0), turtle.GetCurrentCoordinate());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(GameplayException), "Mine hit!")]
+        [Fact]
         public void MoveToMine()
         {
             Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
@@ -69,11 +67,10 @@ namespace TurtleChallenge.Test
             Game.GameBoard.AddGameObject(0, 2, turtle);
             Game.GameBoard.AddGameObject(0, 1, mine);
 
-            turtle.Move();
+            Assert.Throws<GameplayException>(() => turtle.Move());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(GameplayException), "Exited!")]
+        [Fact]
         public void MoveToExit()
         {
             Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
@@ -83,7 +80,7 @@ namespace TurtleChallenge.Test
             Game.GameBoard.AddGameObject(0, 2, turtle);
             Game.GameBoard.AddGameObject(0, 1, exit);
 
-            turtle.Move();
+            Assert.Throws<GameplayException>(() => turtle.Move());
         }
     }
 }

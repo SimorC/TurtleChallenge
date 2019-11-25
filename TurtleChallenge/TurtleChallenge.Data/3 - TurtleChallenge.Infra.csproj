@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\FileDataStepsValidation.cs" />
+    <Compile Include="Validation\FileDataValidation.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

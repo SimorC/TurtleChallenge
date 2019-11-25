@@ -13,7 +13,7 @@ namespace TurtleChallenge.Domain.Model
 
         public Turtle(Direction direction) : base()
         {
-            throw new NotImplementedException();
+            this.Direction = direction;
         }
 
         public void Move()

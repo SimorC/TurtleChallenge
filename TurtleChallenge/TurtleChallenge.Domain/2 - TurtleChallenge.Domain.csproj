@@ -49,6 +49,7 @@
     <Compile Include="Model\Enum\GameOver.cs" />
     <Compile Include="Model\Enum\TurtleAction.cs" />
     <Compile Include="Model\Exit.cs" />
+    <Compile Include="Model\Extension\CoordinateExtensions.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\Mine.cs" />

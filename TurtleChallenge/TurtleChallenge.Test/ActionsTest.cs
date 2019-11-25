@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 using TurtleChallenge.Test.Helper;
+using Xunit;
 
 namespace TurtleChallenge.Test
 {
-    [TestClass]
     public class ActionsTest
     {
-        [TestMethod]
+        [Fact]
         public void ExecuteSequences_Success()
         {
             Set2x3GameBoard();
@@ -20,11 +19,11 @@ namespace TurtleChallenge.Test
 
             List<GameOver> result = Game.ExecuteSequences();
 
-            Assert.IsTrue(result.Count == 1);
-            Assert.IsTrue(result[0] == GameOver.Success);
+            Assert.True(result.Count == 1);
+            Assert.True(result[0] == GameOver.Success);
         }
 
-        [TestMethod]
+        [Fact]
         public void ExecuteSequences_MineHit()
         {
             Set2x3GameBoard();
@@ -35,11 +34,11 @@ namespace TurtleChallenge.Test
 
             List<GameOver> result = Game.ExecuteSequences();
 
-            Assert.IsTrue(result.Count == 1);
-            Assert.IsTrue(result[0] == GameOver.MineHit);
+            Assert.True(result.Count == 1);
+            Assert.True(result[0] == GameOver.MineHit);
         }
 
-        [TestMethod]
+        [Fact]
         public void ExecuteSequences_StillInDanger()
         {
             Set2x3GameBoard();
@@ -50,11 +49,11 @@ namespace TurtleChallenge.Test
 
             List<GameOver> result = Game.ExecuteSequences();
 
-            Assert.IsTrue(result.Count == 1);
-            Assert.IsTrue(result[0] == GameOver.StillInDanger);
+            Assert.True(result.Count == 1);
+            Assert.True(result[0] == GameOver.StillInDanger);
         }
 
-        [TestMethod]
+        [Fact]
         public void ExecuteSequences_Success_MineHit()
         {
             Set2x3GameBoard();
@@ -68,12 +67,12 @@ namespace TurtleChallenge.Test
 
             List<GameOver> result = Game.ExecuteSequences();
 
-            Assert.IsTrue(result.Count == 2);
-            Assert.IsTrue(result[0] == GameOver.Success);
-            Assert.IsTrue(result[1] == GameOver.MineHit);
+            Assert.True(result.Count == 2);
+            Assert.True(result[0] == GameOver.Success);
+            Assert.True(result[1] == GameOver.MineHit);
         }
 
-        [TestMethod]
+        [Fact]
         public void ExecuteSequences_Success_MineHit_StillInDanger()
         {
             Set2x3GameBoard();
@@ -91,10 +90,10 @@ namespace TurtleChallenge.Test
 
             List<GameOver> result = Game.ExecuteSequences();
 
-            Assert.IsTrue(result.Count == 3);
-            Assert.IsTrue(result[0] == GameOver.Success);
-            Assert.IsTrue(result[1] == GameOver.MineHit);
-            Assert.IsTrue(result[2] == GameOver.StillInDanger);
+            Assert.True(result.Count == 3);
+            Assert.True(result[0] == GameOver.Success);
+            Assert.True(result[1] == GameOver.MineHit);
+            Assert.True(result[2] == GameOver.StillInDanger);
         }
 
         #region Private non-test methods

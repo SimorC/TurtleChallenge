@@ -13,12 +13,14 @@ namespace TurtleChallenge.Domain.Model
 
         public Tile(Coordinate coordinate, GameObject gameObject)
         {
-            throw new NotImplementedException();
+            this.Coordinate = coordinate;
+            this.CurrentObject = gameObject;
         }
 
         public Tile(int posX, int posY, GameObject gameObject)
         {
-            throw new NotImplementedException();
+            this.Coordinate = new Coordinate(posX, posY);
+            this.CurrentObject = gameObject;
         }
     }
 }

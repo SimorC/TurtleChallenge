@@ -10,7 +10,7 @@ namespace TurtleChallenge.Domain.Model
     {
         public GameObject()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
