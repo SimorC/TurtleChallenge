@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model.Enum;
@@ -148,6 +147,10 @@ namespace TurtleChallenge.Domain.Model
             var tileItem = this.Tiles.FirstOrDefault(tile => tile.Coordinate.IsSame(coordinate));
             BoardValidation.ValidateTileObject(tileItem);
             BoardValidation.ValidateConcurrentObject(tileItem);
+            //if (objectTBA is Turtle)
+            //{
+
+            //}
             tileItem.CurrentObject = objectTBA;
         }
 
@@ -252,8 +255,11 @@ namespace TurtleChallenge.Domain.Model
             }
         }
 
-        public IEnumerable<GameOver> ExecuteSequences(List<ActionSequence> sequences, Coordinate initialTurtleCoordinate, Turtle turtle)
+        public IEnumerable<GameOver> ExecuteSequences(List<ActionSequence> sequences, Coordinate initialTurtleCoordinate = null, Turtle turtle = null)
         {
+            initialTurtleCoordinate = initialTurtleCoordinate ?? Game.GameBoard.GetTurtleCoordinate();
+            turtle = turtle ?? Game.GameBoard.GetGameObject(initialTurtleCoordinate) as Turtle;
+
             foreach (var actionSeq in sequences)
             {
                 Coordinate initialPos = new Coordinate(initialTurtleCoordinate);
@@ -278,6 +284,7 @@ namespace TurtleChallenge.Domain.Model
                 catch (GameOverException ex)
                 {
                     gameOver = ex.GameOver;
+                    break;
                 }
             }
         }

@@ -28,10 +28,10 @@ namespace TurtleChallenge.Data.Data
         private Board SetGameSettings(dynamic json, Board board = null)
         {
             Board currentBoard = board ?? Game.GameBoard;
-
-            Turtle turtle = new Turtle((Direction)json.TurtleDirection);
-            Exit exit = new Exit();
             currentBoard = new Board((int)json.BoardSizeX, (int)json.BoardSizeY, this);
+
+            Turtle turtle = new Turtle((Direction)json.TurtleDirection, currentBoard);
+            Exit exit = new Exit();
 
             // Add Turtle
             currentBoard.AddGameObject((int)json.TurtlePosX, (int)json.TurtlePosY, turtle);

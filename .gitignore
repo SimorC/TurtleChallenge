@@ -18,3 +18,12 @@
 /TurtleChallenge.Console/bin/Debug
 /TurtleChallenge/TurtleChallenge.Console/bin/Debug
 /TurtleChallenge/TurtleChallenge.Console/obj/Debug
+/TurtleChallenge/TurtleChallenge.Console/bin/Release
+/TurtleChallenge/TurtleChallenge.Console/obj/Release
+/TurtleChallenge/TurtleChallenge.CrossCutting/bin/Release
+/TurtleChallenge/TurtleChallenge.CrossCutting/obj/Release
+/TurtleChallenge/TurtleChallenge.Data/bin/Release
+/TurtleChallenge/TurtleChallenge.Data/obj/Release
+/TurtleChallenge/TurtleChallenge.Domain/bin/Release
+/TurtleChallenge/TurtleChallenge.Domain/obj/Release
+/TurtleChallenge/TurtleChallenge.Test/obj/Release
