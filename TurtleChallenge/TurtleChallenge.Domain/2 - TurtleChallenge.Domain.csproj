@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exception\GameLoadException.cs" />
+    <Compile Include="Exception\GameOverException.cs" />
     <Compile Include="Exception\GameplayException.cs" />
     <Compile Include="Interfaces\IFileData.cs" />
     <Compile Include="Model\ActionSequence.cs" />

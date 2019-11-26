@@ -10,6 +10,7 @@ namespace TurtleChallenge.Domain.Model.Enum
     {
         Success,
         MineHit,
-        StillInDanger
+        StillInDanger,
+        OutOfBounds
     }
 }

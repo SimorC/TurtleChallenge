@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
+using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Test.Helper;
 using Xunit;
 
@@ -14,12 +12,12 @@ namespace TurtleChallenge.Test
     public class TurtleTest
     {
         [Fact]
-        public void Rotate()
+        public void TurtleRotate_TurtleObjectRotates()
         {
-            Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
-            Turtle turtle = new Turtle(Direction.North);
+            Board gameBoard = TestHelper.GetEmptyBoard(1, 3);
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
 
-            Game.GameBoard.AddGameObject(0, 2, turtle);
+            gameBoard.AddGameObject(0, 2, turtle);
 
             turtle.Rotate();
             Assert.Equal(Direction.East, turtle.Direction);
@@ -39,48 +37,108 @@ namespace TurtleChallenge.Test
         }
 
         [Fact]
-        public void Move()
+        public void TurtleRotate_TurtleInTileRotates()
         {
-            Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
-            Turtle turtle = new Turtle(Direction.North);
+            Board gameBoard = TestHelper.GetEmptyBoard(1, 3);
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
 
-            Game.GameBoard.AddGameObject(0, 2, turtle);
+            gameBoard.AddGameObject(0, 2, turtle);
 
-            turtle.Move();
-            Assert.Equal(new Coordinate(0, 1), turtle.GetCurrentCoordinate());
+            var tile = gameBoard.Tiles.FirstOrDefault(tileItem => tileItem.Coordinate.IsSame(gameBoard.GetTurtleCoordinate()));
 
-            turtle.Move();
-            Assert.Equal(new Coordinate(0, 0), turtle.GetCurrentCoordinate());
+            turtle.Rotate();
+            Assert.Equal(Direction.East, ((Turtle)tile.CurrentObject).Direction);
 
-            // If standing in the border of the board (?), simply won't move
-            turtle.Move();
-            Assert.Equal(new Coordinate(0, 0), turtle.GetCurrentCoordinate());
+            turtle.Rotate();
+            Assert.Equal(Direction.South, ((Turtle)tile.CurrentObject).Direction);
+
+            turtle.Rotate();
+            Assert.Equal(Direction.West, ((Turtle)tile.CurrentObject).Direction);
+
+            turtle.Rotate();
+            Assert.Equal(Direction.North, ((Turtle)tile.CurrentObject).Direction);
+
+            turtle.Rotate();
+            turtle.Rotate();
+            Assert.Equal(Direction.South, ((Turtle)tile.CurrentObject).Direction);
         }
 
         [Fact]
-        public void MoveToMine()
+        public void TurtleMove_TurtleMovesInBoard()
         {
-            Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
+            Board gameBoard = TestHelper.GetEmptyBoard(1, 3);
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
+
+            gameBoard.AddGameObject(0, 2, turtle);
+
+            turtle.Move();
+            Assert.True(new Coordinate(0, 1).IsSame(turtle.GetCurrentCoordinate()));
+
+            turtle.Move();
+            Assert.True(new Coordinate(0, 0).IsSame(turtle.GetCurrentCoordinate()));
+        }
+
+        [Fact]
+        public void TurtleMove_TurtleMovesToMine_Throws()
+        {
+            Board gameBoard = TestHelper.GetEmptyBoard(1, 3);
             Mine mine = new Mine();
-            Turtle turtle = new Turtle(Direction.North);
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
 
-            Game.GameBoard.AddGameObject(0, 2, turtle);
-            Game.GameBoard.AddGameObject(0, 1, mine);
+            gameBoard.AddGameObject(0, 1, mine);
+            gameBoard.AddGameObject(0, 2, turtle);
 
-            Assert.Throws<GameplayException>(() => turtle.Move());
+            try
+            {
+                turtle.Move();
+                throw new Exception("Mine not hit!");
+            }
+            catch (GameOverException ex)
+            {
+                Assert.Equal(GameOver.MineHit, ex.GameOver);
+            }
         }
 
         [Fact]
-        public void MoveToExit()
+        public void TurtleMove_TurtleMovesToExit_Throws()
         {
-            Game.GameBoard = TestHelper.GetEmptyBoard(1, 3);
+            Board gameBoard = TestHelper.GetEmptyBoard(1, 3);
             Exit exit = new Exit();
-            Turtle turtle = new Turtle(Direction.North);
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
 
-            Game.GameBoard.AddGameObject(0, 2, turtle);
-            Game.GameBoard.AddGameObject(0, 1, exit);
+            gameBoard.AddGameObject(0, 2, turtle);
+            gameBoard.AddGameObject(0, 1, exit);
 
-            Assert.Throws<GameplayException>(() => turtle.Move());
+            try
+            {
+                turtle.Move();
+                throw new Exception("Exit not hit!");
+            }
+            catch (GameOverException ex)
+            {
+                Assert.Equal(GameOver.Success, ex.GameOver);
+            }
+        }
+
+        [Fact]
+        public void TurtleMove_TurtleMovesToOutOfBounds_Throws()
+        {
+            Board gameBoard = TestHelper.GetEmptyBoard(2, 1);
+            Exit exit = new Exit();
+            Turtle turtle = new Turtle(Direction.North, gameBoard);
+
+            gameBoard.AddGameObject(0, 0, turtle);
+            gameBoard.AddGameObject(1, 0, exit);
+
+            try
+            {
+                turtle.Move();
+                throw new Exception("OutofBounds not reached!");
+            }
+            catch (GameOverException ex)
+            {
+                Assert.Equal(GameOver.OutOfBounds, ex.GameOver);
+            }
         }
     }
 }

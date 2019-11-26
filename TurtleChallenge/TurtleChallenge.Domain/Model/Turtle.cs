@@ -10,25 +10,62 @@ namespace TurtleChallenge.Domain.Model
     public class Turtle : GameObject
     {
         public Direction Direction { get; private set; }
+        private Board CurrentBoard { get; set; }
 
-        public Turtle(Direction direction) : base()
+        public Turtle(Direction direction, Board currentBoard = null) : base()
         {
             this.Direction = direction;
+            this.CurrentBoard = currentBoard ?? Game.GameBoard;
         }
 
         public void Move()
         {
-            throw new NotImplementedException();
+            Coordinate moveCoordinate = GetMoveCoordinate();
+            this.CurrentBoard.MoveObject(GetCurrentCoordinate(), moveCoordinate);
         }
 
         public void Rotate()
         {
-            throw new NotImplementedException();
+            var currentDirection = (int)this.Direction;
+            currentDirection++;
+
+            if (currentDirection == 5)
+            {
+                currentDirection = 1;
+            }
+
+            this.Direction = (Direction)currentDirection;
         }
 
         public Coordinate GetCurrentCoordinate()
         {
-            throw new NotImplementedException();
+            Coordinate turtleCoordinate = this.CurrentBoard.GetTurtleCoordinate();
+            return new Coordinate(turtleCoordinate.PosX, turtleCoordinate.PosY);
+        }
+
+        private Coordinate GetMoveCoordinate()
+        {
+            Coordinate coordinate = this.GetCurrentCoordinate();
+
+            switch (this.Direction)
+            {
+                case Direction.North:
+                    coordinate.PosY--;
+                    break;
+                case Direction.East:
+                    coordinate.PosX++;
+                    break;
+                case Direction.South:
+                    coordinate.PosY++;
+                    break;
+                case Direction.West:
+                    coordinate.PosX--;
+                    break;
+                default:
+                    break;
+            }
+
+            return coordinate;
         }
     }
 }

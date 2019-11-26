@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System;
-using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Domain.Interfaces;
+using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Domain.Validation;
 
 namespace TurtleChallenge.Domain.Model
@@ -19,7 +19,7 @@ namespace TurtleChallenge.Domain.Model
         public Board(string configPath, IFileData fileData)
         {
             this._fileData = fileData;
-            
+
             try
             {
                 this._fileData.LoadConfigurationFile(configPath).Wait();
@@ -40,10 +40,14 @@ namespace TurtleChallenge.Domain.Model
             this.Tiles = GetEmptyTiles(sizeX, sizeY).ToList();
         }
 
-        public Board(int sizeX, int sizeY, IEnumerable<Tile> tiles, IFileData fileData)
+        public Board(int sizeX, int sizeY, List<Tile> tiles, IFileData fileData)
         {
             this._fileData = fileData;
-            throw new NotImplementedException();
+
+            this.SizeX = sizeX;
+            this.SizeY = sizeY;
+
+            this.Tiles = tiles;
         }
 
         public bool IsGameWinnable()
@@ -66,22 +70,51 @@ namespace TurtleChallenge.Domain.Model
             tileItem.CurrentObject = objectTBA;
         }
 
+        public void MoveObject(Coordinate sourceCoordinate, Coordinate targetCoordinate)
+        {
+            Tile currentTile = GetTile(sourceCoordinate);
+            Tile targetTile = GetTile(targetCoordinate);
+
+            BoardValidation.ValidateSourceTile(currentTile);
+            // GameOver.OutOfBounds if tile does not exist
+            BoardValidation.ValidateTargetTile(targetTile);
+
+            GameObject sourceGameObject = currentTile.CurrentObject;
+            GameObject targetGameObject = targetTile.CurrentObject;
+
+            BoardValidation.ValidateMovingObject(sourceGameObject);
+            BoardValidation.ValidateLegitMovement(targetGameObject);
+
+            targetTile.CurrentObject = sourceGameObject;
+            currentTile.CurrentObject = null;
+        }
+
         public Coordinate GetTurtleCoordinate()
         {
-            var tileIte = this.Tiles.First(tile => tile.CurrentObject is Turtle);
-            return tileIte.Coordinate;
+            var tileItem = this.Tiles.First(tile => tile.CurrentObject is Turtle);
+            return tileItem.Coordinate;
         }
 
         public Coordinate GetExitCoordinate()
         {
-            var tileIte = this.Tiles.First(tile => tile.CurrentObject is Exit);
-            return tileIte.Coordinate;
+            var tileItem = this.Tiles.First(tile => tile.CurrentObject is Exit);
+            return tileItem.Coordinate;
         }
 
         public List<Coordinate> GetMinesCoordinates()
         {
             var tiles = this.Tiles.Where(tile => tile.CurrentObject is Mine).ToList();
             return tiles.Select(tile => tile.Coordinate).ToList();
+        }
+
+        public Tile GetTile(int posX, int posY)
+        {
+            return this.GetTile(new Coordinate(posX, posY));
+        }
+
+        public Tile GetTile(Coordinate coordinate)
+        {
+            return this.Tiles.FirstOrDefault(tile => tile.Coordinate.IsSame(coordinate));
         }
 
         private IEnumerable<Tile> GetEmptyTiles(int sizeX, int sizeY)
