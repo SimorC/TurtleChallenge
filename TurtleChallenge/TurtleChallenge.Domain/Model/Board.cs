@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Interfaces;
+using TurtleChallenge.Domain.Model.Enum;
 using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Domain.Validation;
 
@@ -150,6 +151,26 @@ namespace TurtleChallenge.Domain.Model
             tileItem.CurrentObject = objectTBA;
         }
 
+        public void ResetTurtle(int posX, int posY)
+        {
+            Coordinate coord = new Coordinate(posX, posY);
+
+            ResetTurtle(coord);
+        }
+
+        public void ResetTurtle(Coordinate initialPosition)
+        {
+            // Ignore if it's already in the initial position
+            if (!initialPosition.IsSame(this.GetTurtleCoordinate()))
+            {
+                Tile initialTile = this.GetTile(initialPosition);
+                Tile currentTile = this.GetTile(this.GetTurtleCoordinate());
+
+                initialTile.CurrentObject = currentTile.CurrentObject;
+                currentTile.CurrentObject = null;
+            }
+        }
+
         public void MoveObject(Coordinate targetCoordinate, Coordinate sourceCoordinate)
         {
             Tile currentTile = GetTile(sourceCoordinate);
@@ -227,6 +248,36 @@ namespace TurtleChallenge.Domain.Model
                 for (int j = 0; j < sizeY; j++)
                 {
                     yield return new Tile(i, j, null);
+                }
+            }
+        }
+
+        public IEnumerable<GameOver> ExecuteSequences(List<ActionSequence> sequences, Coordinate initialTurtleCoordinate, Turtle turtle)
+        {
+            foreach (var actionSeq in sequences)
+            {
+                Coordinate initialPos = new Coordinate(initialTurtleCoordinate);
+                this.ResetTurtle(initialPos);
+
+                GameOver gameOver = GameOver.Unset;
+
+                this.ExecuteActions(turtle, actionSeq, ref gameOver);
+
+                yield return gameOver == GameOver.Unset ? GameOver.StillInDanger : gameOver;
+            }
+        }
+
+        private void ExecuteActions(Turtle turtle, ActionSequence actionSeq, ref GameOver gameOver)
+        {
+            foreach (var action in actionSeq.Actions)
+            {
+                try
+                {
+                    turtle.ExecuteAction(action);
+                }
+                catch (GameOverException ex)
+                {
+                    gameOver = ex.GameOver;
                 }
             }
         }

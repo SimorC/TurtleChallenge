@@ -67,5 +67,18 @@ namespace TurtleChallenge.Domain.Model
 
             return coordinate;
         }
+
+        internal void ExecuteAction(TurtleAction action)
+        {
+            switch (action)
+            {
+                case TurtleAction.Move:
+                    this.Move();
+                    break;
+                case TurtleAction.Rotate:
+                    this.Rotate();
+                    break;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 using TurtleChallenge.Test.Helper;
@@ -11,13 +12,14 @@ namespace TurtleChallenge.Test
         [Fact]
         public void ExecuteSequences_Success()
         {
-            Set2x3GameBoard();
+            Board board = Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle);
             List<TurtleAction> actions = GetExitSequence();
 
             ActionSequence seq = new ActionSequence() { Actions = actions };
-            Game.Sequences.Add(seq);
+            List<ActionSequence> listSeq = new List<ActionSequence>();
+            listSeq.Add(seq);
 
-            List<GameOver> result = Game.ExecuteSequences();
+            List<GameOver> result = board.ExecuteSequences(listSeq, initialPos, turtle).ToList();
 
             Assert.True(result.Count == 1);
             Assert.True(result[0] == GameOver.Success);
@@ -26,13 +28,14 @@ namespace TurtleChallenge.Test
         [Fact]
         public void ExecuteSequences_MineHit()
         {
-            Set2x3GameBoard();
+            Board board = Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle);
             List<TurtleAction> actions = GetMineHitSequence();
 
             ActionSequence seq = new ActionSequence() { Actions = actions };
-            Game.Sequences.Add(seq);
+            List<ActionSequence> listSeq = new List<ActionSequence>();
+            listSeq.Add(seq);
 
-            List<GameOver> result = Game.ExecuteSequences();
+            List<GameOver> result = board.ExecuteSequences(listSeq, initialPos, turtle).ToList();
 
             Assert.True(result.Count == 1);
             Assert.True(result[0] == GameOver.MineHit);
@@ -41,13 +44,14 @@ namespace TurtleChallenge.Test
         [Fact]
         public void ExecuteSequences_StillInDanger()
         {
-            Set2x3GameBoard();
+            Board board = Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle);
             List<TurtleAction> actions = GetStillInDangerSequence();
 
             ActionSequence seq = new ActionSequence() { Actions = actions };
-            Game.Sequences.Add(seq);
+            List<ActionSequence> listSeq = new List<ActionSequence>();
+            listSeq.Add(seq);
 
-            List<GameOver> result = Game.ExecuteSequences();
+            List<GameOver> result = board.ExecuteSequences(listSeq, initialPos, turtle).ToList();
 
             Assert.True(result.Count == 1);
             Assert.True(result[0] == GameOver.StillInDanger);
@@ -56,16 +60,18 @@ namespace TurtleChallenge.Test
         [Fact]
         public void ExecuteSequences_Success_MineHit()
         {
-            Set2x3GameBoard();
+            Board board = Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle);
             List<TurtleAction> actions1 = GetExitSequence();
             List<TurtleAction> actions2 = GetMineHitSequence();
 
+            List<ActionSequence> listSeq = new List<ActionSequence>();
+
             ActionSequence seq1 = new ActionSequence() { Actions = actions1 };
             ActionSequence seq2 = new ActionSequence() { Actions = actions2 };
-            Game.Sequences.Add(seq1);
-            Game.Sequences.Add(seq2);
+            listSeq.Add(seq1);
+            listSeq.Add(seq2);
 
-            List<GameOver> result = Game.ExecuteSequences();
+            List<GameOver> result = board.ExecuteSequences(listSeq, initialPos, turtle).ToList();
 
             Assert.True(result.Count == 2);
             Assert.True(result[0] == GameOver.Success);
@@ -75,20 +81,22 @@ namespace TurtleChallenge.Test
         [Fact]
         public void ExecuteSequences_Success_MineHit_StillInDanger()
         {
-            Set2x3GameBoard();
+            Board board = Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle);
             List<TurtleAction> actions1 = GetExitSequence();
             List<TurtleAction> actions2 = GetMineHitSequence();
             List<TurtleAction> actions3 = GetStillInDangerSequence();
+
+            List<ActionSequence> listSeq = new List<ActionSequence>();
 
             ActionSequence seq1 = new ActionSequence() { Actions = actions1 };
             ActionSequence seq2 = new ActionSequence() { Actions = actions2 };
             ActionSequence seq3 = new ActionSequence() { Actions = actions3 };
 
-            Game.Sequences.Add(seq1);
-            Game.Sequences.Add(seq2);
-            Game.Sequences.Add(seq3);
+            listSeq.Add(seq1);
+            listSeq.Add(seq2);
+            listSeq.Add(seq3);
 
-            List<GameOver> result = Game.ExecuteSequences();
+            List<GameOver> result = board.ExecuteSequences(listSeq, initialPos, turtle).ToList();
 
             Assert.True(result.Count == 3);
             Assert.True(result[0] == GameOver.Success);
@@ -97,17 +105,21 @@ namespace TurtleChallenge.Test
         }
 
         #region Private non-test methods
-        private void Set2x3GameBoard()
+        private Board Set2x3GameBoard(out Coordinate initialPos, out Turtle turtle)
         {
-            Game.GameBoard = TestHelper.GetEmptyBoard(2, 3);
-            Turtle turtle = new Turtle(Direction.North);
+            Board board = TestHelper.GetEmptyBoard(2, 3);
+            turtle = new Turtle(Direction.North, board);
             Exit exit = new Exit();
             Mine mine = new Mine();
 
+            initialPos = new Coordinate(0, 2);
+
             // TODO: Ideally this have to be created independent of the Domain - but will leave like this for now
-            Game.GameBoard.AddGameObject(0, 0, exit);
-            Game.GameBoard.AddGameObject(0, 2, turtle);
-            Game.GameBoard.AddGameObject(1, 1, mine);
+            board.AddGameObject(0, 0, exit);
+            board.AddGameObject(initialPos, turtle);
+            board.AddGameObject(1, 1, mine);
+
+            return board;
         }
 
         private List<TurtleAction> GetExitSequence()

@@ -11,6 +11,7 @@ namespace TurtleChallenge.Domain.Model.Enum
         Success,
         MineHit,
         StillInDanger,
-        OutOfBounds
+        OutOfBounds,
+        Unset
     }
 }
