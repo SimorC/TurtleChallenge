@@ -13,7 +13,7 @@ namespace TurtleChallenge.Data.Data
 {
     public class FileData : IFileData
     {
-        public async Task LoadConfigurationFile(string path)
+        public async Task<Board> LoadConfigurationFile(string path, Board board = null)
         {
             dynamic json = await RetrieveJSON(path);
 
@@ -22,26 +22,30 @@ namespace TurtleChallenge.Data.Data
             FileDataConfigurationValidation.ValidateTurtle(json);
             FileDataConfigurationValidation.ValidateTurtleDirection(json);
 
-            SetGameSettings(json);
+            return SetGameSettings(json, board);
         }
 
-        private void SetGameSettings(dynamic json)
+        private Board SetGameSettings(dynamic json, Board board = null)
         {
+            Board currentBoard = board ?? Game.GameBoard;
+
             Turtle turtle = new Turtle((Direction)json.TurtleDirection);
             Exit exit = new Exit();
-            Game.GameBoard = new Board((int)json.BoardSizeX, (int)json.BoardSizeY, this);
+            currentBoard = new Board((int)json.BoardSizeX, (int)json.BoardSizeY, this);
 
             // Add Turtle
-            Game.GameBoard.AddGameObject((int)json.TurtlePosX, (int)json.TurtlePosY, turtle);
+            currentBoard.AddGameObject((int)json.TurtlePosX, (int)json.TurtlePosY, turtle);
             // Add Exit
-            Game.GameBoard.AddGameObject((int)json.ExitPosX, (int)json.ExitPosY, exit);
+            currentBoard.AddGameObject((int)json.ExitPosX, (int)json.ExitPosY, exit);
 
             // Add Mines
             foreach (var item in json.Mines)
             {
                 Mine mine = new Mine();
-                Game.GameBoard.AddGameObject((int)item.MinePosX, (int)item.MinePosY, mine);
+                currentBoard.AddGameObject((int)item.MinePosX, (int)item.MinePosY, mine);
             }
+
+            return currentBoard;
         }
 
         public async Task LoadStepsFile(string path)

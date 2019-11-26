@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TurtleChallenge.Data.Data;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Extension;
@@ -16,15 +17,15 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
+            Board board = await fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
 
-            Assert.True(Game.GameBoard.SizeX > 0);
-            Assert.True(Game.GameBoard.SizeY > 0);
-            Assert.True(Game.GameBoard.Tiles.Count() > 0);
-            Assert.True(new Coordinate(0, 2).IsSame(Game.GameBoard.GetTurtleCoordinate()));
-            Assert.True(new Coordinate(4, 2).IsSame(Game.GameBoard.GetExitCoordinate()));
-            Assert.True(new Coordinate(0, 0).IsSame(Game.GameBoard.GetMinesCoordinates()[0]));
-            Assert.True(new Coordinate(3, 2).IsSame(Game.GameBoard.GetMinesCoordinates()[1]));
+            Assert.True(board.SizeX > 0);
+            Assert.True(board.SizeY > 0);
+            Assert.True(board.Tiles.Count() > 0);
+            Assert.True(new Coordinate(0, 2).IsSame(board.GetTurtleCoordinate()));
+            Assert.True(new Coordinate(4, 2).IsSame(board.GetExitCoordinate()));
+            Assert.True(new Coordinate(0, 0).IsSame(board.GetMinesCoordinates()[0]));
+            Assert.True(new Coordinate(3, 2).IsSame(board.GetMinesCoordinates()[1]));
         }
 
         [Fact]

@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Domain.Validation;
@@ -22,10 +23,19 @@ namespace TurtleChallenge.Domain.Model
 
             try
             {
-                this._fileData.LoadConfigurationFile(configPath).Wait();
+                Board board = this._fileData.LoadConfigurationFile(configPath, this).GetAwaiter().GetResult();
+
+                this.SizeX = board.SizeX;
+                this.SizeY = board.SizeY;
+                this.Tiles = board.Tiles;
             }
             catch (System.Exception ex)
             {
+                if (ex is GameLoadException)
+                {
+                    throw ex;
+                }
+
                 throw ex.InnerException;
             }
         }
@@ -50,10 +60,80 @@ namespace TurtleChallenge.Domain.Model
             this.Tiles = tiles;
         }
 
+        #region IsGameWinnable
+        // This region is not being used apart from the Tests
         public bool IsGameWinnable()
         {
-            throw new NotImplementedException();
+            List<Coordinate> visitedCoordinates = new List<Coordinate>();
+            object lockObject = new object();
+
+            try
+            {
+                // TODO: Refactor to use multi-thread
+                PreviewMovements(lockObject, ref visitedCoordinates, this.GetTurtleCoordinate());
+            }
+            catch (GameOverException ex)
+            {
+                return true;
+            }
+
+            return false;
+
         }
+
+        private void PreviewMovements(object lockObject, ref List<Coordinate> visitedCoordinates, Coordinate targetCoordinate)
+        {
+            if (visitedCoordinates.Any(visited => visited.IsSame(targetCoordinate)))
+            {
+                return;
+            }
+
+            AddVisitedLocation(lockObject, visitedCoordinates, targetCoordinate);
+
+            try
+            {
+                this.PreviewMoveObject(targetCoordinate);
+            }
+            catch (GameOverException ex)
+            {
+                if (ex.GameOver == Enum.GameOver.Success) { throw; }
+
+                return;
+            }
+            catch (System.Exception ex)
+            {
+                return;
+            }
+
+            PreviewAllMovements(lockObject, visitedCoordinates, targetCoordinate);
+        }
+
+        private static void AddVisitedLocation(object lockObject, List<Coordinate> visitedCoordinates, Coordinate targetCoordinate)
+        {
+            lock (lockObject)
+            {
+                visitedCoordinates.Add(targetCoordinate);
+            }
+        }
+
+        private void PreviewAllMovements(object lockObject, List<Coordinate> visitedCoordinates, Coordinate targetCoordinate)
+        {
+            var nMove = new Coordinate(targetCoordinate);
+            var eMove = new Coordinate(targetCoordinate);
+            var sMove = new Coordinate(targetCoordinate);
+            var wMove = new Coordinate(targetCoordinate);
+
+            nMove.PosY--;
+            eMove.PosX++;
+            sMove.PosY++;
+            wMove.PosX--;
+
+            PreviewMovements(lockObject, ref visitedCoordinates, nMove);
+            PreviewMovements(lockObject, ref visitedCoordinates, eMove);
+            PreviewMovements(lockObject, ref visitedCoordinates, sMove);
+            PreviewMovements(lockObject, ref visitedCoordinates, wMove);
+        }
+        #endregion
 
         public void AddGameObject(int posX, int posY, GameObject objectTBA)
         {
@@ -70,7 +150,7 @@ namespace TurtleChallenge.Domain.Model
             tileItem.CurrentObject = objectTBA;
         }
 
-        public void MoveObject(Coordinate sourceCoordinate, Coordinate targetCoordinate)
+        public void MoveObject(Coordinate targetCoordinate, Coordinate sourceCoordinate)
         {
             Tile currentTile = GetTile(sourceCoordinate);
             Tile targetTile = GetTile(targetCoordinate);
@@ -87,6 +167,18 @@ namespace TurtleChallenge.Domain.Model
 
             targetTile.CurrentObject = sourceGameObject;
             currentTile.CurrentObject = null;
+        }
+
+        public void PreviewMoveObject(Coordinate targetCoordinate)
+        {
+            Tile targetTile = GetTile(targetCoordinate);
+
+            // GameOver.OutOfBounds if tile does not exist
+            BoardValidation.ValidateTargetTile(targetTile);
+
+            GameObject targetGameObject = targetTile.CurrentObject;
+
+            BoardValidation.ValidateLegitMovement(targetGameObject);
         }
 
         public Coordinate GetTurtleCoordinate()
@@ -115,6 +207,17 @@ namespace TurtleChallenge.Domain.Model
         public Tile GetTile(Coordinate coordinate)
         {
             return this.Tiles.FirstOrDefault(tile => tile.Coordinate.IsSame(coordinate));
+        }
+
+        public GameObject GetGameObject(int posX, int posY)
+        {
+            return this.GetGameObject(new Coordinate(posX, posY));
+        }
+
+        public GameObject GetGameObject(Coordinate coordinate)
+        {
+            Tile tile = this.GetTile(coordinate);
+            return tile.CurrentObject;
         }
 
         private IEnumerable<Tile> GetEmptyTiles(int sizeX, int sizeY)

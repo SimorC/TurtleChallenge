@@ -21,7 +21,7 @@ namespace TurtleChallenge.Domain.Model
         public void Move()
         {
             Coordinate moveCoordinate = GetMoveCoordinate();
-            this.CurrentBoard.MoveObject(GetCurrentCoordinate(), moveCoordinate);
+            this.CurrentBoard.MoveObject(moveCoordinate, GetCurrentCoordinate());
         }
 
         public void Rotate()
