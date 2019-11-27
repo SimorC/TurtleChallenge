@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -13,6 +12,12 @@ namespace TurtleChallenge.Data.Data
 {
     public class FileData : IFileData
     {
+        /// <summary>
+        /// Loads a Board instance based on a Configuration File path
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <param name="board">Board to be loaded - if null Game.GameBoard will be used</param>
+        /// <returns>Loaded Board (Task)</returns>
         public async Task<Board> LoadConfigurationFile(string path, Board board = null)
         {
             dynamic json = await RetrieveJSON(path);
@@ -25,6 +30,12 @@ namespace TurtleChallenge.Data.Data
             return SetGameSettings(json, board);
         }
 
+        /// <summary>
+        /// Load a Board instance based on a loaded configuration json (dynamic)
+        /// </summary>
+        /// <param name="json">dynamic json with game configuration</param>
+        /// <param name="board">Board to be loaded</param>
+        /// <returns>Loaded Board</returns>
         private Board SetGameSettings(dynamic json, Board board = null)
         {
             Board currentBoard = board ?? Game.GameBoard;
@@ -48,15 +59,24 @@ namespace TurtleChallenge.Data.Data
             return currentBoard;
         }
 
-        public async Task LoadStepsFile(string path)
+        /// <summary>
+        /// Loads a Board instance based on a Sequences File path
+        /// </summary>
+        /// <param name="path">File path</param>
+        /// <returns>Empty Task</returns>
+        public async Task LoadSequencesFile(string path)
         {
             dynamic json = await RetrieveJSON(path);
 
-            FileDataStepsValidation.ValidateTurtleDirection(json);
+            FileDataStepsValidation.ValidateSequences(json);
 
             SetGameSequences(json);
         }
 
+        /// <summary>
+        /// Set the sequences based on a dynamic json
+        /// </summary>
+        /// <param name="json">dynamic json with Sequences</param>
         private void SetGameSequences(dynamic json)
         {
             Game.Sequences = new List<ActionSequence>();
@@ -64,21 +84,31 @@ namespace TurtleChallenge.Data.Data
             foreach (var seq in json.Sequences)
             {
                 List<TurtleAction> actions = new List<TurtleAction>();
-                SetActions(seq, ref actions);
+                actions = GetActions(seq).ToList();
 
                 Game.Sequences.Add(new ActionSequence() { Actions = actions });
             }
         }
 
-        private static void SetActions(dynamic seq, ref List<TurtleAction> actions)
+        /// <summary>
+        /// Loads the actions from a dynamic seq and a list of TurtleActions
+        /// </summary>
+        /// <param name="seq">dynamic Sequence node from the json</param>
+        /// <returns>Enumerable of TurtleAction</returns>
+        private static IEnumerable<TurtleAction> GetActions(dynamic seq)
         {
             foreach (var step in seq.Steps)
             {
                 TurtleAction act = step.Action == "M" ? TurtleAction.Move : TurtleAction.Rotate;
-                actions.Add(act);
+                yield return act;
             }
         }
 
+        /// <summary>
+        /// Retrieves a dynamic json from a physical .json file
+        /// </summary>
+        /// <param name="path">Path to the file</param>
+        /// <returns>Task (dynamic) with loaded json</returns>
         private async Task<dynamic> RetrieveJSON(string path)
         {
             byte[] result;

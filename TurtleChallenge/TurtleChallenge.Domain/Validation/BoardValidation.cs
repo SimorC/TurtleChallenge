@@ -1,5 +1,4 @@
-﻿using System;
-using TurtleChallenge.Domain.Exception;
+﻿using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 

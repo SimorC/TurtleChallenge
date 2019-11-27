@@ -1,16 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TurtleChallenge.Data.Validation
 {
     internal static class FileDataStepsValidation
     {
-        internal static void ValidateTurtleDirection(dynamic json)
+        /// <summary>
+        /// Checks whether the Sequences and Steps are properly configured
+        /// </summary>
+        /// <param name="json">dynamic json with loaded sequences</param>
+        internal static void ValidateSequences(dynamic json)
         {
             if (!(json.Sequences is JArray) || json.Sequences.Count < 1)
             {

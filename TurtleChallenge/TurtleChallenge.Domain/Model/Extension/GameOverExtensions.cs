@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TurtleChallenge.Domain.Model.Enum;
+﻿using TurtleChallenge.Domain.Model.Enum;
 
 namespace TurtleChallenge.Domain.Model.Extension
 {
     public static class GameOverExtensions
     {
+        /// <summary>
+        /// Returns a Friendly String from a GameOver enum value
+        /// </summary>
+        /// <param name="thisGameOver">Context GameOver enum</param>
+        /// <returns>Friendly string</returns>
         public static string ToFriendlyString(this GameOver thisGameOver)
         {
             switch (thisGameOver)

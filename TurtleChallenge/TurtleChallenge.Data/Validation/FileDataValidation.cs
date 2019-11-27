@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace TurtleChallenge.Data.Validation
 {
     internal static class FileDataConfigurationValidation
     {
+        /// <summary>
+        /// Checks whether the Sizes of the board are properly set
+        /// </summary>
+        /// <param name="json">dynamic json with configuration file loaded</param>
         internal static void ValidateBoard(dynamic json)
         {
             if (json.BoardSizeX == null || !(json.BoardSizeX.Value is long))
@@ -22,6 +21,10 @@ namespace TurtleChallenge.Data.Validation
             }
         }
 
+        /// <summary>
+        /// Checks whether the Turtle Direction is properly set
+        /// </summary>
+        /// <param name="json">dynamic json with configuration file loaded</param>
         internal static void ValidateTurtleDirection(dynamic json)
         {
             if (json.TurtleDirection == null || !(json.TurtleDirection.Value is long))
@@ -30,6 +33,10 @@ namespace TurtleChallenge.Data.Validation
             }
         }
 
+        /// <summary>
+        /// Checks whether the Exit is properly set
+        /// </summary>
+        /// <param name="json">dynamic json with configuration file loaded</param>
         internal static void ValidateExit(dynamic json)
         {
             if (json.ExitPosX == null || !(json.ExitPosX.Value is long))
@@ -43,6 +50,10 @@ namespace TurtleChallenge.Data.Validation
             }
         }
 
+        /// <summary>
+        /// Checks whether the Turtle Position is properly set
+        /// </summary>
+        /// <param name="json">dynamic json with configuration file loaded</param>
         internal static void ValidateTurtle(dynamic json)
         {
             if (json.TurtlePosX == null || !(json.TurtlePosX.Value is long))

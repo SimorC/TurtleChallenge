@@ -13,6 +13,9 @@ namespace TurtleChallenge.CrossCutting
             this._kernel = kernel;
         }
 
+        /// <summary>
+        /// Loads the Injection mapping
+        /// </summary>
         public override void Load()
         {
             this._kernel.Bind<IFileData>().To<FileData>();

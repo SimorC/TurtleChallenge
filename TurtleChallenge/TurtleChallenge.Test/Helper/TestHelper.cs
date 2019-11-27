@@ -1,10 +1,7 @@
 ﻿using Ninject;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TurtleChallenge.CrossCutting;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model;
@@ -13,8 +10,6 @@ namespace TurtleChallenge.Test.Helper
 {
     internal class TestHelper
     {
-        private readonly IFileData _fileData;
-
         #region Config Files
         internal static string _correctConfigPath = "ConfigurationFiles/CorrectConfig.json";
         internal static string _nonWinnableConfigPath_1 = "ConfigurationFiles/NonWinnable_1.json";
@@ -40,6 +35,12 @@ namespace TurtleChallenge.Test.Helper
 
         internal static string _missingFile = "RandomFile.json";
 
+        /// <summary>
+        /// Returns an empty (No GameObject's) loaded board
+        /// </summary>
+        /// <param name="sizeX">Size of the X axis</param>
+        /// <param name="sizeY">Size of the Y axis</param>
+        /// <returns>Loaded Board instance</returns>
         internal static Board GetEmptyBoard(int sizeX, int sizeY)
         {
             List<Tile> tiles = GetEmptyTiles(sizeX, sizeY).ToList();
@@ -49,6 +50,10 @@ namespace TurtleChallenge.Test.Helper
             return ret;
         }
 
+        /// <summary>
+        /// Manual injection to get a FileData instance
+        /// </summary>
+        /// <returns>FileData instance</returns>
         internal static IFileData GetFileData()
         {
             var kernel = new StandardKernel();
@@ -57,6 +62,12 @@ namespace TurtleChallenge.Test.Helper
             return kernel.Get<IFileData>();
         }
 
+        /// <summary>
+        /// Get empty tiles to be loaded on a Board instance
+        /// </summary>
+        /// <param name="sizeX">Size of the X axis</param>
+        /// <param name="sizeY">Size of the Y axis</param>
+        /// <returns>Enumerable of "empty" Tile's</returns>
         private static IEnumerable<Tile> GetEmptyTiles(int sizeX, int sizeY)
         {
             for (int i = 0; i < sizeX; i++)

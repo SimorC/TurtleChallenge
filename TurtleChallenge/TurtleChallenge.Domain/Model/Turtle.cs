@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TurtleChallenge.Domain.Model.Enum;
+﻿using TurtleChallenge.Domain.Model.Enum;
 
 namespace TurtleChallenge.Domain.Model
 {
@@ -18,12 +13,18 @@ namespace TurtleChallenge.Domain.Model
             this.CurrentBoard = currentBoard ?? Game.GameBoard;
         }
 
+        /// <summary>
+        /// Moves the Turtle in the current direction
+        /// </summary>
         public void Move()
         {
             Coordinate moveCoordinate = GetMoveCoordinate();
             this.CurrentBoard.MoveObject(moveCoordinate, GetCurrentCoordinate());
         }
 
+        /// <summary>
+        /// Rotates the Turtle
+        /// </summary>
         public void Rotate()
         {
             var currentDirection = (int)this.Direction;
@@ -37,12 +38,20 @@ namespace TurtleChallenge.Domain.Model
             this.Direction = (Direction)currentDirection;
         }
 
+        /// <summary>
+        /// Retrieves the current Coordinate of the Turtle in the Board
+        /// </summary>
+        /// <returns>Current Coordinate</returns>
         public Coordinate GetCurrentCoordinate()
         {
             Coordinate turtleCoordinate = this.CurrentBoard.GetTurtleCoordinate();
             return new Coordinate(turtleCoordinate.PosX, turtleCoordinate.PosY);
         }
 
+        /// <summary>
+        /// Get target Coordinate for moving
+        /// </summary>
+        /// <returns>Target Coordinate</returns>
         private Coordinate GetMoveCoordinate()
         {
             Coordinate coordinate = this.GetCurrentCoordinate();
@@ -68,6 +77,10 @@ namespace TurtleChallenge.Domain.Model
             return coordinate;
         }
 
+        /// <summary>
+        /// Executes an action (Move/Rotate) based on a TurtleAction enum
+        /// </summary>
+        /// <param name="action">TurtleAction enum</param>
         internal void ExecuteAction(TurtleAction action)
         {
             switch (action)

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using TurtleChallenge.Data.Data;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Extension;
@@ -75,7 +74,7 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await fileData.LoadStepsFile(TestHelper._finishSingleSteps);
+            await fileData.LoadSequencesFile(TestHelper._finishSingleSteps);
 
             Assert.True(Game.Sequences.Count == 1);
         }
@@ -85,7 +84,7 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadStepsFile(TestHelper._incorrectSequence));
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadSequencesFile(TestHelper._incorrectSequence));
         }
 
         [Fact]
@@ -93,7 +92,7 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadStepsFile(TestHelper._incorrectMultipleSequences));
+            await Assert.ThrowsAsync<FileLoadException>(() => fileData.LoadSequencesFile(TestHelper._incorrectMultipleSequences));
         }
 
         [Fact]
@@ -101,7 +100,7 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await Assert.ThrowsAsync<FileNotFoundException>(() => fileData.LoadStepsFile(TestHelper._missingFile));
+            await Assert.ThrowsAsync<FileNotFoundException>(() => fileData.LoadSequencesFile(TestHelper._missingFile));
         }
 
         [Fact]
@@ -109,7 +108,7 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await fileData.LoadStepsFile(TestHelper._finishMultipleSequence);
+            await fileData.LoadSequencesFile(TestHelper._finishMultipleSequence);
 
             Assert.Equal(2, Game.Sequences.Count);
         }

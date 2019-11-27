@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TurtleChallenge.ConsoleApp.Helper;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model;
@@ -60,7 +58,7 @@ namespace TurtleChallenge.ConsoleApp
         {
             try
             {
-                fileData.LoadStepsFile(stepsPath).Wait();
+                fileData.LoadSequencesFile(stepsPath).Wait();
                 flagOk = true;
             }
             catch (Exception ex)

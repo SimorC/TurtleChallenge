@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using TurtleChallenge.Domain.Model.Enum;
+﻿using System.Collections.Generic;
 
 namespace TurtleChallenge.Domain.Model
 {

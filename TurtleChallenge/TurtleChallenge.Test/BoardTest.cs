@@ -1,6 +1,4 @@
-﻿using Ninject;
-using System.Reflection;
-using TurtleChallenge.Domain.Exception;
+﻿using TurtleChallenge.Domain.Exception;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Test.Helper;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TurtleChallenge.Domain.Model
+﻿namespace TurtleChallenge.Domain.Model
 {
     public class Coordinate
     {

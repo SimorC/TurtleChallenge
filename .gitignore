@@ -27,3 +27,5 @@
 /TurtleChallenge/TurtleChallenge.Domain/bin/Release
 /TurtleChallenge/TurtleChallenge.Domain/obj/Release
 /TurtleChallenge/TurtleChallenge.Test/obj/Release
+/TurtleChallenge/obj/Release
+/.vs
