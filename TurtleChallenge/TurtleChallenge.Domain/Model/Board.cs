@@ -15,20 +15,25 @@ namespace TurtleChallenge.Domain.Model
 
         public List<Tile> Tiles { get; set; }
 
-        private readonly IFileData _fileData;
+        private readonly IGameService _gameService;
+
+        public Board()
+        {
+
+        }
 
         /// <summary>
         /// Starts the instance with a configuration file path and a FileData object
         /// </summary>
         /// <param name="configPath">Configuration file path</param>
-        /// <param name="fileData">FileData object</param>
-        public Board(string configPath, IFileData fileData)
+        /// <param name="gameService">GameService object</param>
+        public Board(string configPath, IGameService gameService)
         {
-            this._fileData = fileData;
+            this._gameService = gameService;
 
             try
             {
-                Board board = this._fileData.LoadConfigurationFile(configPath, this).GetAwaiter().GetResult();
+                Board board = this._gameService.GetBoardFromConfigurationFile(configPath);
 
                 this.SizeX = board.SizeX;
                 this.SizeY = board.SizeY;
@@ -50,10 +55,10 @@ namespace TurtleChallenge.Domain.Model
         /// </summary>
         /// <param name="sizeX">Size of X axis</param>
         /// <param name="sizeY">Size of Y axis</param>
-        /// <param name="fileData">FileData object</param>
-        public Board(int sizeX, int sizeY, IFileData fileData)
+        /// <param name="gameService">GameService object</param>
+        public Board(int sizeX, int sizeY, IGameService gameService)
         {
-            this._fileData = fileData;
+            this._gameService = gameService;
 
             this.SizeX = sizeX;
             this.SizeY = sizeY;
@@ -67,10 +72,10 @@ namespace TurtleChallenge.Domain.Model
         /// <param name="sizeX">Size of X axis</param>
         /// <param name="sizeY">Size of Y axis</param>
         /// <param name="tiles">List of Tile's</param>
-        /// <param name="fileData">FileData object</param>
-        public Board(int sizeX, int sizeY, List<Tile> tiles, IFileData fileData)
+        /// <param name="gameService">IGameService reference</param>
+        public Board(int sizeX, int sizeY, List<Tile> tiles, IGameService gameService)
         {
-            this._fileData = fileData;
+            this._gameService = gameService;
 
             this.SizeX = sizeX;
             this.SizeY = sizeY;

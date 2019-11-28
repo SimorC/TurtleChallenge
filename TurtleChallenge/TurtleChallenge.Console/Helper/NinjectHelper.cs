@@ -7,12 +7,12 @@ namespace TurtleChallenge.ConsoleApp.Helper
 {
     public class NinjectHelper
     {
-        internal static IFileData GetFileData()
+        internal static IGameService GetGameService()
         {
             var kernel = new StandardKernel();
             new LoadInjectionModule(kernel).Load();
             kernel.Load(Assembly.GetExecutingAssembly());
-            return kernel.Get<IFileData>();
+            return kernel.Get<IGameService>();
         }
     }
 }

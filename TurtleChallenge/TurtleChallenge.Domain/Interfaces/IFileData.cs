@@ -5,7 +5,7 @@ namespace TurtleChallenge.Domain.Interfaces
 {
     public interface IFileData
     {
-        Task<Board> LoadConfigurationFile(string path, Board board = null);
-        Task LoadSequencesFile(string path);
+        Task<dynamic> LoadConfigurationFile(string path, Board board = null);
+        Task<dynamic> LoadSequencesFile(string path);
     }
 }

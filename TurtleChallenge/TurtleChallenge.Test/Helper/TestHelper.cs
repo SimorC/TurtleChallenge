@@ -45,7 +45,7 @@ namespace TurtleChallenge.Test.Helper
         {
             List<Tile> tiles = GetEmptyTiles(sizeX, sizeY).ToList();
 
-            Board ret = new Board(sizeX, sizeY, tiles, GetFileData());
+            Board ret = new Board(sizeX, sizeY, tiles, GetGameService());
 
             return ret;
         }
@@ -60,6 +60,18 @@ namespace TurtleChallenge.Test.Helper
             new LoadInjectionModule(kernel).Load();
             kernel.Load(Assembly.GetExecutingAssembly());
             return kernel.Get<IFileData>();
+        }
+
+        /// <summary>
+        /// Manual injection to get a GameService instance
+        /// </summary>
+        /// <returns>GameService instance</returns>
+        internal static IGameService GetGameService()
+        {
+            var kernel = new StandardKernel();
+            new LoadInjectionModule(kernel).Load();
+            kernel.Load(Assembly.GetExecutingAssembly());
+            return kernel.Get<IGameService>();
         }
 
         /// <summary>

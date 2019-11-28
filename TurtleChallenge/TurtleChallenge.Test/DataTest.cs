@@ -1,8 +1,5 @@
 ﻿using System.IO;
-using System.Linq;
 using TurtleChallenge.Infra.Data;
-using TurtleChallenge.Domain.Model;
-using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Test.Helper;
 using Xunit;
 
@@ -16,15 +13,10 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            Board board = await fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
+            dynamic boardJson = await fileData.LoadConfigurationFile(TestHelper._correctConfigPath);
 
-            Assert.True(board.SizeX > 0);
-            Assert.True(board.SizeY > 0);
-            Assert.True(board.Tiles.Count() > 0);
-            Assert.True(new Coordinate(0, 2).IsSame(board.GetTurtleCoordinate()));
-            Assert.True(new Coordinate(4, 2).IsSame(board.GetExitCoordinate()));
-            Assert.True(new Coordinate(0, 0).IsSame(board.GetMinesCoordinates()[0]));
-            Assert.True(new Coordinate(3, 2).IsSame(board.GetMinesCoordinates()[1]));
+            // Ideally this should be checking the dynamic values, but because of they are internal the string is checked instead
+            Assert.Equal("{\r\n  \'BoardSizeX\': 5,\r\n  \'BoardSizeY\': 5,\r\n  \'TurtlePosX\': 0,\r\n  \'TurtlePosY\': 2,\r\n  \'TurtleDirection\': 1,\r\n  \'ExitPosX\': 4,\r\n  \'ExitPosY\': 2,\r\n  \'Mines\': [\r\n    {\r\n      \'MinePosX\': 0,\r\n      \'MinePosY\': 0\r\n    },\r\n    {\r\n      \'MinePosX\': 3,\r\n      \'MinePosY\': 2\r\n    }\r\n  ]\r\n}", boardJson.ToString().Replace('"', '\''));
         }
 
         [Fact]
@@ -74,9 +66,10 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await fileData.LoadSequencesFile(TestHelper._finishSingleSteps);
+            dynamic seqJson = await fileData.LoadSequencesFile(TestHelper._finishSingleSteps);
 
-            Assert.True(Game.Sequences.Count == 1);
+            // Ideally this should be checking the dynamic values, but because of they are internal the string is checked instead
+            Assert.Equal("{\r\n  \'Sequences\': [\r\n    {\r\n      \'Steps\': [\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}", seqJson.ToString().Replace('"', '\''));
         }
 
         [Fact]
@@ -108,9 +101,10 @@ namespace TurtleChallenge.Test
         {
             FileData fileData = new FileData();
 
-            await fileData.LoadSequencesFile(TestHelper._finishMultipleSequence);
+            dynamic seqJson = await fileData.LoadSequencesFile(TestHelper._finishMultipleSequence);
 
-            Assert.Equal(2, Game.Sequences.Count);
+            // Ideally this should be checking the dynamic values, but because of they are internal the string is checked instead
+            Assert.Equal("{\r\n  \'Sequences\': [\r\n    {\r\n      \'Steps\': [\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \'Steps\': [\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        },\r\n        {\r\n          \'Action\': \'R\'\r\n        },\r\n        {\r\n          \'Action\': \'M\'\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}", seqJson.ToString().Replace('"', '\''));
         }
         #endregion
     }

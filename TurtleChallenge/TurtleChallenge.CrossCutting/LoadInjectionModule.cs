@@ -1,7 +1,8 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using TurtleChallenge.Infra.Data;
 using TurtleChallenge.Domain.Interfaces;
+using TurtleChallenge.Domain.Service;
+using TurtleChallenge.Infra.Data;
 
 namespace TurtleChallenge.CrossCutting
 {
@@ -19,6 +20,7 @@ namespace TurtleChallenge.CrossCutting
         public override void Load()
         {
             this._kernel.Bind<IFileData>().To<FileData>();
+            this._kernel.Bind<IGameService>().To<GameService>();
         }
     }
 }

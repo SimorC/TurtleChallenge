@@ -15,10 +15,10 @@ namespace TurtleChallenge.ConsoleApp
         {
             try
             {
-                IFileData fileData = NinjectHelper.GetFileData();
+                IGameService gameService = NinjectHelper.GetGameService();
 
-                SetConfig(fileData);
-                SetSequences(fileData);
+                SetConfig(gameService);
+                SetSequences(gameService);
 
                 List<GameOver> lstGameOver = Game.GameBoard.ExecuteSequences(Game.Sequences).ToList();
 
@@ -32,7 +32,7 @@ namespace TurtleChallenge.ConsoleApp
             Console.ReadKey();
         }
 
-        private static void SetConfig(IFileData fileData)
+        private static void SetConfig(IGameService gameService)
         {
             bool flagOk = false;
 
@@ -41,15 +41,15 @@ namespace TurtleChallenge.ConsoleApp
                 Console.WriteLine("Please enter the path for the configuration file (path + file name):");
                 string configPath = Console.ReadLine();
 
-                flagOk = TrySetConfig(fileData, flagOk, configPath);
+                flagOk = TrySetConfig(gameService, flagOk, configPath);
             } while (!flagOk);
         }
 
-        private static bool TrySetConfig(IFileData fileData, bool flagOk, string configPath)
+        private static bool TrySetConfig(IGameService gameService, bool flagOk, string configPath)
         {
             try
             {
-                Game.GameBoard = fileData.LoadConfigurationFile(configPath, Game.GameBoard).GetAwaiter().GetResult();
+                Game.GameBoard = gameService.GetBoardFromConfigurationFile(configPath);
                 flagOk = true;
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace TurtleChallenge.ConsoleApp
             }
         }
 
-        private static void SetSequences(IFileData fileData)
+        private static void SetSequences(IGameService gameService)
         {
             bool flagOk = false;
 
@@ -77,15 +77,15 @@ namespace TurtleChallenge.ConsoleApp
                 Console.WriteLine("Please enter the path for the sequences file (path + file name):");
                 string configPath = Console.ReadLine();
 
-                flagOk = TrySetSteps(fileData, flagOk, configPath);
+                flagOk = TrySetSteps(gameService, flagOk, configPath);
             } while (!flagOk);
         }
 
-        private static bool TrySetSteps(IFileData fileData, bool flagOk, string stepsPath)
+        private static bool TrySetSteps(IGameService gameService, bool flagOk, string stepsPath)
         {
             try
             {
-                fileData.LoadSequencesFile(stepsPath).Wait();
+                Game.Sequences = gameService.GetSequencesFromFile(stepsPath);
                 flagOk = true;
             }
             catch (Exception ex)
