@@ -207,24 +207,26 @@ namespace TurtleChallenge.Domain.Model
         /// </summary>
         /// <param name="posX">Position on X axis</param>
         /// <param name="posY">Position on Y axis</param>
-        public void ResetTurtle(int posX, int posY)
+        public void ResetTurtle(int posX, int posY, Direction initialTurtleDirection)
         {
             Coordinate coord = new Coordinate(posX, posY);
 
-            ResetTurtle(coord);
+            ResetTurtle(coord, initialTurtleDirection);
         }
 
         /// <summary>
         /// Resets the turtle position to the initial position
         /// </summary>
         /// <param name="initialPosition">Initial position coordinate</param>
-        public void ResetTurtle(Coordinate initialPosition)
+        public void ResetTurtle(Coordinate initialPosition, Direction initialTurtleDirection)
         {
             // Ignore if it's already in the initial position
             if (!initialPosition.IsSame(this.GetTurtleCoordinate()))
             {
                 Tile initialTile = this.GetTile(initialPosition);
                 Tile currentTile = this.GetTile(this.GetTurtleCoordinate());
+
+                ((Turtle)currentTile.CurrentObject).Direction = initialTurtleDirection;
 
                 initialTile.CurrentObject = currentTile.CurrentObject;
                 currentTile.CurrentObject = null;
@@ -249,7 +251,7 @@ namespace TurtleChallenge.Domain.Model
             GameObject targetGameObject = targetTile.CurrentObject;
 
             BoardValidation.ValidateMovingObject(sourceGameObject);
-            BoardValidation.ValidateLegitMovement(targetGameObject);
+            BoardValidation.ValidateLegitMovement(targetGameObject, targetCoordinate);
 
             targetTile.CurrentObject = sourceGameObject;
             currentTile.CurrentObject = null;
@@ -268,7 +270,7 @@ namespace TurtleChallenge.Domain.Model
 
             GameObject targetGameObject = targetTile.CurrentObject;
 
-            BoardValidation.ValidateLegitMovement(targetGameObject);
+            BoardValidation.ValidateLegitMovement(targetGameObject, targetCoordinate);
         }
 
         /// <summary>
@@ -372,11 +374,12 @@ namespace TurtleChallenge.Domain.Model
         {
             initialTurtleCoordinate = initialTurtleCoordinate ?? Game.GameBoard.GetTurtleCoordinate();
             turtle = turtle ?? Game.GameBoard.GetGameObject(initialTurtleCoordinate) as Turtle;
+            Direction initialTurtleDirection = turtle.Direction;
 
             foreach (var actionSeq in sequences)
             {
                 Coordinate initialPos = new Coordinate(initialTurtleCoordinate);
-                this.ResetTurtle(initialPos);
+                this.ResetTurtle(initialPos, initialTurtleDirection);
 
                 GameOver gameOver = GameOver.Unset;
 

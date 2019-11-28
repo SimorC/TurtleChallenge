@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TurtleChallenge.Data.Validation;
+using TurtleChallenge.Infra.Validation;
 using TurtleChallenge.Domain.Interfaces;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Enum;
 
-namespace TurtleChallenge.Data.Data
+namespace TurtleChallenge.Infra.Data
 {
     public class FileData : IFileData
     {
@@ -83,10 +84,9 @@ namespace TurtleChallenge.Data.Data
 
             foreach (var seq in json.Sequences)
             {
-                List<TurtleAction> actions = new List<TurtleAction>();
-                actions = GetActions(seq).ToList();
+                IEnumerable<TurtleAction> actions = GetActions(seq);
 
-                Game.Sequences.Add(new ActionSequence() { Actions = actions });
+                Game.Sequences.Add(new ActionSequence() { Actions = actions.ToList() });
             }
         }
 
@@ -95,7 +95,7 @@ namespace TurtleChallenge.Data.Data
         /// </summary>
         /// <param name="seq">dynamic Sequence node from the json</param>
         /// <returns>Enumerable of TurtleAction</returns>
-        private static IEnumerable<TurtleAction> GetActions(dynamic seq)
+        private IEnumerable<TurtleAction> GetActions(dynamic seq)
         {
             foreach (var step in seq.Steps)
             {

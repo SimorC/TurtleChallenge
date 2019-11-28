@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.IO;
 
-namespace TurtleChallenge.Data.Validation
+namespace TurtleChallenge.Infra.Validation
 {
     internal static class FileDataStepsValidation
     {

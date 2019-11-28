@@ -4,7 +4,7 @@ namespace TurtleChallenge.Domain.Model
 {
     public class Turtle : GameObject
     {
-        public Direction Direction { get; private set; }
+        public Direction Direction { get; set; }
         private Board CurrentBoard { get; set; }
 
         public Turtle(Direction direction, Board currentBoard = null) : base()

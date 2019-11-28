@@ -56,16 +56,19 @@ namespace TurtleChallenge.Domain.Validation
             }
         }
 
-        internal static void ValidateLegitMovement(GameObject targetGameObject)
+        internal static void ValidateLegitMovement(GameObject targetGameObject, Coordinate targetCoordinate)
         {
+            int posX = targetCoordinate.PosX;
+            var posY = targetCoordinate.PosY;
+
             if (targetGameObject is Mine)
             {
-                throw new GameOverException(GameOver.MineHit, "Mine hit!");
+                throw new GameOverException(GameOver.MineHit, $"Mine hit on [{posX}][{posY}]!");
             }
 
             if (targetGameObject is Exit)
             {
-                throw new GameOverException(GameOver.Success, "Successfully reached the exit!");
+                throw new GameOverException(GameOver.Success, $"Successfully reached the exit on [{posX}][{posY}]!");
             }
         }
     }

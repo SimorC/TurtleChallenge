@@ -1,6 +1,6 @@
 ﻿using Ninject;
 using Ninject.Modules;
-using TurtleChallenge.Data.Data;
+using TurtleChallenge.Infra.Data;
 using TurtleChallenge.Domain.Interfaces;
 
 namespace TurtleChallenge.CrossCutting

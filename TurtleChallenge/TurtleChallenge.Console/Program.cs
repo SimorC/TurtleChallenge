@@ -32,6 +32,34 @@ namespace TurtleChallenge.ConsoleApp
             Console.ReadKey();
         }
 
+        private static void SetConfig(IFileData fileData)
+        {
+            bool flagOk = false;
+
+            do
+            {
+                Console.WriteLine("Please enter the path for the configuration file (path + file name):");
+                string configPath = Console.ReadLine();
+
+                flagOk = TrySetConfig(fileData, flagOk, configPath);
+            } while (!flagOk);
+        }
+
+        private static bool TrySetConfig(IFileData fileData, bool flagOk, string configPath)
+        {
+            try
+            {
+                Game.GameBoard = fileData.LoadConfigurationFile(configPath, Game.GameBoard).GetAwaiter().GetResult();
+                flagOk = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return flagOk;
+        }
+
         private static void WriteOutput(List<GameOver> lstGameOver)
         {
             for (int i = 0; i < lstGameOver.Count; i++)
@@ -46,8 +74,7 @@ namespace TurtleChallenge.ConsoleApp
 
             do
             {
-                Console.WriteLine("Please enter the path for the sequences file:");
-                //string configPath = @"C:\Users\Simor\source\repos\TurtleChallenge\TurtleChallenge\TurtleChallenge.Test\StepFiles\FinishMultipleSequence.json";
+                Console.WriteLine("Please enter the path for the sequences file (path + file name):");
                 string configPath = Console.ReadLine();
 
                 flagOk = TrySetSteps(fileData, flagOk, configPath);
@@ -59,35 +86,6 @@ namespace TurtleChallenge.ConsoleApp
             try
             {
                 fileData.LoadSequencesFile(stepsPath).Wait();
-                flagOk = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-
-            return flagOk;
-        }
-
-        private static void SetConfig(IFileData fileData)
-        {
-            bool flagOk = false;
-
-            do
-            {
-                Console.WriteLine("Please enter the path for the configuration file:");
-                //string configPath = @"C:\Users\Simor\source\repos\TurtleChallenge\TurtleChallenge\TurtleChallenge.Test\ConfigurationFiles\CorrectConfig.json";
-                string configPath = Console.ReadLine();
-
-                flagOk = TrySetConfig(fileData, flagOk, configPath);
-            } while (!flagOk);
-        }
-
-        private static bool TrySetConfig(IFileData fileData, bool flagOk, string configPath)
-        {
-            try
-            {
-                Game.GameBoard = fileData.LoadConfigurationFile(configPath, Game.GameBoard).GetAwaiter().GetResult();
                 flagOk = true;
             }
             catch (Exception ex)

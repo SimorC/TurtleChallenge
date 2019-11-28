@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using TurtleChallenge.Data.Data;
+using TurtleChallenge.Infra.Data;
 using TurtleChallenge.Domain.Model;
 using TurtleChallenge.Domain.Model.Extension;
 using TurtleChallenge.Test.Helper;
